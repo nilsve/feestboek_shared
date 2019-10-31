@@ -1,7 +1,13 @@
 {
   "name": "feestboek_shared",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nilsve/feestboek_shared.git"
+  },
   "scripts": {
     "test": "ts-node node_modules/jasmine/bin/jasmine --config=\"jasmine.json\"",
     "build": "npm run test && tsc"

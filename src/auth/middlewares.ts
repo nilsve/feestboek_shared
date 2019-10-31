@@ -8,19 +8,22 @@ import { UserInfo, AccessRights } from './interfaces';
   Sets the `UserInfo` object on `res.locals.userInfo`.
 */
 export async function requireLogin(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-  const jwtToken = req.headers.authorization;
+  const bearerToken = req.headers.authorization as string;
+  if (!bearerToken || !bearerToken.startsWith('Bearer '))  
   try {
-    if (jwtToken) {
-      const userInfo = await validateJwt(jwtToken);
-      res.locals.userInfo = userInfo;
-      return next();
-    }
+    const userInfo = await validateJwt(getJwtFromBearer(bearerToken));
+    res.locals.userInfo = userInfo;
+    return next();
   } catch (err) {
     console.info('Error during validation of JWT');
   }
 
   return res.sendStatus(403);
 };
+
+export function getJwtFromBearer(bearerToken: string): string {
+  return bearerToken.split('Bearer ')[1];
+}
 
 /*
   This function will block requests if the user's AccessRights aren't `AccessRights.Admin`
