@@ -9,6 +9,7 @@ const testConfig: ConfigurationData = {
 }
 
 const userInfo: UserInfo = {
+    id: 'abc',
     email: 'test@test.nl',
     username: 'test',
     rights: AccessRights.Admin,
