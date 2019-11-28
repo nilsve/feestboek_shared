@@ -10,6 +10,7 @@ export interface UserData {
     The user info
 */
 export interface UserInfo {
+    id: string;
     username: string;
     email: string;
     rights: AccessRights;
