@@ -9,7 +9,6 @@ import { UserInfo, AccessRights } from './interfaces';
 */
 export async function requireLogin(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
   const bearerToken = req.headers.authorization as string;
-  if (!bearerToken || !bearerToken.startsWith('Bearer '))  
   try {
     const userInfo = await validateJwt(getJwtFromBearer(bearerToken));
     res.locals.userInfo = userInfo;
