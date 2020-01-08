@@ -1,7 +1,13 @@
 /*
     The JWT data
 */
-export interface UserData {
+export enum TokenType {
+    RefreshToken = 'REFRESH_TOKEN',
+    AccessToken = 'ACCESS_TOKEN',
+}
+
+export interface UserToken {
+    type: TokenType;
     exp: number; // UTC date when token expires
     userInfo: UserInfo;
 }

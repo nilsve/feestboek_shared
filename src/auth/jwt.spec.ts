@@ -1,7 +1,7 @@
 import configuration from "../configuration/configuration";
 import { ConfigurationData } from "../configuration/interfaces";
 import { generateJwt, validateJwt } from "./jwt";
-import { UserInfo, AccessRights } from "./interfaces";
+import { UserInfo, AccessRights, TokenType } from "./interfaces";
 
 const testConfig: ConfigurationData = {
     jwtSecret: 'bla',
@@ -22,10 +22,16 @@ describe('jwt validation', () => {
     });
 
     it('should be able to generate a JWT and then parse it', async (done) => {
-        const jwt = await generateJwt(userInfo);
+        const jwt = await generateJwt(userInfo, TokenType.AccessToken);
         expect(jwt).toBeTruthy();
-        const parsedUserInfo = await validateJwt(jwt);
-        expect(parsedUserInfo).toEqual(userInfo, 'should contain the same information');
+        const parsedAccessToken = await validateJwt(jwt);
+        expect(parsedAccessToken.userInfo).toEqual(userInfo, 'should contain the same userinfo');
+        expect(parsedAccessToken.type).toEqual(TokenType.AccessToken);
+        try {
+            await validateJwt(jwt, TokenType.RefreshToken);
+            expect(false).toBe(true, 'Check should have failed becuase of an invalid token type')
+        } catch (err) {
+        }   
         done();
     })
 });
