@@ -4,7 +4,8 @@ import configuration from "../configuration/configuration";
 
 const testConfig: ConfigurationData = {
     jwtSecret: 'bla',
-    jwtDuration: 60,
+    refreshTokenValidDuration: 60,
+    accessTokenValidDuration: 60,
 }
 
 describe('authentication middlewares', () => {

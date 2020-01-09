@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 
 import {validateJwt} from './jwt';
-import { UserInfo, AccessRights } from './interfaces';
+import { UserInfo, AccessRights, TokenType } from './interfaces';
 
 /*
   This function will block requests if the user isn't logged on.
@@ -10,7 +10,7 @@ import { UserInfo, AccessRights } from './interfaces';
 export async function requireLogin(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
   const bearerToken = req.headers.authorization as string;
   try {
-    const userInfo = await validateJwt(getJwtFromBearer(bearerToken));
+    const userInfo = await validateJwt (getJwtFromBearer(bearerToken), TokenType.AccessToken);
     res.locals.userInfo = userInfo;
     return next();
   } catch (err) {
@@ -21,7 +21,12 @@ export async function requireLogin(req: Request, res: Response, next: NextFuncti
 };
 
 export function getJwtFromBearer(bearerToken: string): string {
-  return bearerToken.split('Bearer ')[1];
+  const splitted = bearerToken.split('Bearer ');
+  if (splitted.length > 1) {
+    return splitted[1];
+  } else {
+    return '';
+  }
 }
 
 /*

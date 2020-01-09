@@ -10,7 +10,7 @@ export async function validateJwt(jwtToken: string, expectedTokenType: TokenType
     const {jwtSecret} = configuration.getConfiguration();
     jwt.verify(jwtToken, jwtSecret, (err: jwt.VerifyErrors, decoded) => {
       if (err) {
-        return reject(err);
+        return reject(err.name);
       } else {
         const userToken = decoded as UserToken;
         if (userToken.type === expectedTokenType) {
@@ -24,15 +24,18 @@ export async function validateJwt(jwtToken: string, expectedTokenType: TokenType
 }
 
 /*
-  Returns JWT version of UserData
+  Returns JWT version of UserToken
 */
 export async function generateJwt(userInfo: UserInfo, tokenType: TokenType): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    const {jwtSecret, jwtDuration} = configuration.getConfiguration();
+    const {jwtSecret, refreshTokenValidDuration, accessTokenValidDuration} = configuration.getConfiguration();
+
+    const tokenValidDuration = tokenType === TokenType.AccessToken ? accessTokenValidDuration : refreshTokenValidDuration;
+
     const userToken: UserToken = {
       type: tokenType,
       userInfo,
-      exp: Math.floor(Date.now() / 1000) + jwtDuration,
+      exp: Math.floor(Date.now() / 1000) + tokenValidDuration,
     }
     jwt.sign(userToken, jwtSecret, (err, token) => {
       if (err) {

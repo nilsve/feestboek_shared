@@ -5,7 +5,8 @@ import { UserInfo, AccessRights, TokenType } from "./interfaces";
 
 const testConfig: ConfigurationData = {
     jwtSecret: 'bla',
-    jwtDuration: 60,
+    refreshTokenValidDuration: 60,
+    accessTokenValidDuration: 60,
 }
 
 const userInfo: UserInfo = {

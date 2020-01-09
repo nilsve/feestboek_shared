@@ -1,4 +1,5 @@
 export interface ConfigurationData {
     jwtSecret: string;
-    jwtDuration: number;
+    refreshTokenValidDuration: number;
+    accessTokenValidDuration: number;
 }

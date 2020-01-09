@@ -3,7 +3,8 @@ import { ConfigurationData } from "./interfaces";
 
 const config: ConfigurationData = {
     jwtSecret: 'test',
-    jwtDuration: 60,
+    refreshTokenValidDuration: 60,
+    accessTokenValidDuration: 60,
 }
 
 describe('Configuration settings', () => {
