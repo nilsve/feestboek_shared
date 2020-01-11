@@ -10,8 +10,8 @@ import { UserInfo, AccessRights, TokenType } from './interfaces';
 export async function requireLogin(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
   const bearerToken = req.headers.authorization as string;
   try {
-    const userInfo = await validateJwt (getJwtFromBearer(bearerToken), TokenType.AccessToken);
-    res.locals.userInfo = userInfo;
+    const userToken = await validateJwt(getJwtFromBearer(bearerToken), TokenType.AccessToken);
+    res.locals.userInfo = userToken.userInfo;
     return next();
   } catch (err) {
     console.info('Error during validation of JWT');
